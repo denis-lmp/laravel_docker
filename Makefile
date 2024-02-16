@@ -1,4 +1,4 @@
-.PHONY: docker-build docker-up composer-install migrate seed install down
+.PHONY: docker-build docker-up composer-install key-generate migrate seed install down frontend
 
 # Build
 docker-build:
@@ -11,6 +11,9 @@ docker-up:
 # Install Composer dependencies
 composer-install:
 	docker-compose exec app composer install
+
+key-generate:
+	docker-compose exec app php artisan key:generate
 
 # Run migrations
 migrate:
@@ -25,12 +28,12 @@ test:
 	docker-compose exec app php artisan test
 
 #run frontend
-frontend:
-	npm run dev
+#frontend:
+#	npm run dev
 
 # Stop
 down:
 	docker-compose down
 
 # Install dependencies, run Docker Compose, migrations, and seeders
-install: docker-build docker-up composer-install migrate seed test frontend
+install: docker-build docker-up composer-install key-generate migrate seed test
